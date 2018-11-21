@@ -1,0 +1,4 @@
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://ingapl.com/${rootArtifactId}/xsd" xmlns="http://ingapl.com/${rootArtifactId}/xsd" xmlns:tns="http://ingapl.com/${rootArtifactId}/xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <!-- DEFINICIÓN DE LOS TIPOS -->
+    
+</xsd:schema>

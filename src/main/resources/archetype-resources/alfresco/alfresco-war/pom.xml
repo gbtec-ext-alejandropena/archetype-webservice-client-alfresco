@@ -1,0 +1,181 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>${groupId}</groupId>
+        <artifactId>${rootArtifactId}-alfresco</artifactId>
+        <version>${version}</version>
+    </parent>
+
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+    <name>${rootArtifactId} - Alfresco - WAR</name>
+    <packaging>war</packaging>
+    <description>WAR de alfresco para el proyecto ${artifactId}</description>
+
+    <!--
+    ================================================================================
+    PROPERTIES
+    ================================================================================
+    -->
+    <properties>
+        <webapp.name>alfresco</webapp.name>
+    </properties>
+
+    <!--
+    ================================================================================
+    DEPENDENCIAS
+    ================================================================================
+    -->
+
+    <dependencies>
+        <dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-enterprise</artifactId>
+            <version>${symbol_dollar}{alfresco.version}</version>
+            <type>war</type>
+        </dependency>
+        <!-- MÓDULOS -->
+        <dependency>
+            <groupId>${groupId}</groupId>
+            <artifactId>${rootArtifactId}-alfresco-model</artifactId>
+            <type>amp</type>
+        </dependency>
+        <dependency>
+            <groupId>${groupId}</groupId>
+            <artifactId>${rootArtifactId}-alfresco-services</artifactId>
+            <type>amp</type>
+        </dependency>
+    </dependencies>
+
+    <!--
+    ================================================================================
+    BUILD SECTION
+    ================================================================================
+    -->
+
+    <build>
+        <finalName>${symbol_dollar}{webapp.name}</finalName>
+
+        <!--
+        ========================================================================
+        BUILD SECTION - RESOURCES
+            Indicando filtering=true los archivos resource pueden uncluir variables definidas en los filters
+            y variables del pom (como ${symbol_dollar}{project.versión}, ${symbol_dollar}{entorno}, ... )
+        ========================================================================
+        -->
+
+        <resources>
+            <!--
+                Se replica la estructa de src/main/resources en webapps/alfresco/WEB-INF/classes
+                excluyendo los archivos de la sección <excludes> y sin ningún tipo de filtrado.
+            -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <!--
+                    Los archivos siguientes se excluyen en la compilación por defecto.
+                    Para incluirlos compilar con el perfil correspondiente "ldap", "restore", ...
+                -->
+                <excludes>
+                    <exclude>**/restore-context.xml</exclude>
+                    <exclude>**/ldap-*.xml</exclude>
+                    <exclude>**/*_es_ES.properties</exclude>
+                </excludes>
+            </resource>
+            <!--
+                Se realiza el correspondiente filtrado de propiedades en tiempo de compilación para
+                los archivos indicados en <includes/>.
+                NOTA : los archivos copiados en virtud de la tag <resource/> anterior (que no tenían filtrado)
+                se sobreescriben ahora con el correspondiente filtrado. Por esto esta sección debe ir después
+                que la anterior.
+            -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <!--
+                        In this case we do build time filtering instead of runtime Spring
+                        property loading, as this is based on a CoC from Alfresco
+                    -->
+                    <include>alfresco/extension/file-servers-custom.xml</include>
+                    <include>log4j.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                    <argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=512m</argLine>
+                </configuration>
+            </plugin>
+            <!-- Needed for cross OS compatibility in acp/zip encoding -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>acp</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>zip</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>swf</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-amps</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeTypes>amp</includeTypes>
+                            <outputDirectory>${symbol_dollar}{build.directory}/${symbol_dollar}{webapp.name}</outputDirectory>
+                            <excludes>META*</excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <!--
+                        This is required to be re-defined explicitly at plugin level as
+                        otherwise the 'amp' extension unArchiver won't be available to the
+                        maven-dependency-plugin
+                    -->
+                    <dependency>
+                        <groupId>org.alfresco.maven.plugin</groupId>
+                        <artifactId>maven-amp-plugin</artifactId>
+                        <version>3.0.2</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <archiveClasses>false</archiveClasses>
+                    <webappDirectory>target/${symbol_dollar}{webapp.name}</webappDirectory>
+                    <warSourceExcludes>tools/**</warSourceExcludes>
+                    <webResources>
+
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

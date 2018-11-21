@@ -1,0 +1,15 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<beans>
+    <bean id="${artifactId}-model" parent="dictionaryModelBootstrap" >        
+        <property name="models">
+            <list>
+                <value>alfresco/module/${symbol_dollar}{groupId}.${symbol_dollar}{artifactId}/model/${artifactId}-model.xml</value>
+            </list>
+        </property>
+    </bean>
+</beans>

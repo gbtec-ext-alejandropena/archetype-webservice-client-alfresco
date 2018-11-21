@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>${groupId}</groupId>
+        <artifactId>${rootArtifactId}-alfresco-modules</artifactId>
+        <version>${version}</version>
+    </parent>
+
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+    <packaging>amp</packaging>
+    <name>${rootArtifactId} - Alfresco module - Model</name>
+
+    <!--
+    ================================================================================
+    DEPENDENCIES
+    ================================================================================
+    -->
+
+    <dependencies>
+        <dependency>
+            <groupId>org.alfresco</groupId>
+            <artifactId>alfresco-enterprise-repository</artifactId>
+            <version>${alfresco.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+        <!--
+    ================================================================================
+    DISTRIBUTION MANAGEMENT
+    ================================================================================
+    The scm is required for the buildnumber-maven-plugin which is required
+    for AMP version numbering
+    -->
+
+    <!--
+            http://maven.apache.org/scm/subversion.html
+            http://wiki.gxdeveloperweb.com/confluence/display/GXDEV/Maven+and+Source+Control+Management+in+Subversion
+
+    -->
+    <!--
+    ================================================================================
+    BUILD SECTION
+    ================================================================================
+    -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.sourcesense.maven</groupId>
+                <artifactId>maven-nosnapshot-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>strip</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <revisionOnScmFailure>1</revisionOnScmFailure>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.alfresco.maven.plugin</groupId>
+                <artifactId>maven-amp-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+                <executions>
+                    <execution>
+                        <id>jar-install</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <packaging>jar</packaging>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>${project.artifactId}</artifactId>
+                            <version>${project.version}</version>
+                            <file>${project.build.directory}/${project.artifactId}-${project.version}/lib/${project.artifactId}-${project.version}.jar</file>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>jar-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy-file</goal>
+                        </goals>
+                        <configuration>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                            <url>${project.distributionManagement.repository.url}</url>
+                            <artifactId>${project.artifactId}</artifactId>
+                            <groupId>${project.groupId}</groupId>
+                            <version>${project.version}</version>
+                            <file>${project.build.directory}/${project.artifactId}-${project.version}/lib/${project.artifactId}-${project.version}.jar</file>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+            ================================================================================
+            Preparar archivos para distribuir
+            ================================================================================
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>copy-to-dest</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}.amp" tofile="${project.build.directory}/../../../../target/${project.artifactId}-${project.version}.amp" />
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </resource>
+            <!--
+                Copies and filters AMP config in the proper package
+                'alfresco/module/${groupId}.${artifactId}' so to enforce full module
+                naming single sourcing from POM properties
+            -->
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/config</directory>
+                <targetPath>alfresco/module/${groupId}.${artifactId}</targetPath>
+                <excludes>
+                    <exclude>**README-*</exclude>
+                </excludes>
+            </resource>
+        </resources>
+    </build>
+</project>

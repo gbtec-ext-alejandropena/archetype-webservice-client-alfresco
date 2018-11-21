@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>${groupId}</groupId>
+        <artifactId>${rootArtifactId}-alfresco</artifactId>
+        <version>${version}</version>
+    </parent>
+
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <version>${version}</version>
+    <packaging>pom</packaging>
+    <name>${rootArtifactId} - Alfresco - Module</name>
+
+    <!--
+    ================================================================================
+    BUILD SECTION
+    ================================================================================
+    -->
+    <build>
+        <pluginManagement>
+            <!--
+                Los plugins maven-nosnapshot-plugin, buildnumber-maven-plugin y
+                maven-amp-plugin son requeridos por los amp
+            -->
+            <plugins>
+                <plugin>
+                    <!-- http://mojo.codehaus.org/versions-maven-plugin/index.html -->
+                    <groupId>org.alfresco.maven.plugin</groupId>
+                    <artifactId>maven-amp-plugin</artifactId>
+                    <version>3.0.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.3</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-nosnapshot-plugin</artifactId>
+                    <groupId>com.sourcesense.maven</groupId>
+                    <version>0.0.6</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!--
+    ================================================================================
+    MODULOS
+    ================================================================================
+    -->
+
+</project>

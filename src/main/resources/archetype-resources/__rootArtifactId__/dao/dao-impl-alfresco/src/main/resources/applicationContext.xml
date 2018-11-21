@@ -1,0 +1,54 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="true">   
+   
+    
+    <bean id="dao" class="${package}.${rootArtifactId}.dao.impl.alfresco.Dao">
+        <property name="jerseyService" ref="jerseyServiceClientBase"/>
+    </bean>
+    
+    
+    
+    <bean id="alfrescoDaoInterceptor" class="${package}.${rootArtifactId}.dao.impl.alfresco.interceptor.AlfrescoDaoInterceptor">
+        <property name="jerseyService" ref="jerseyServiceClientBase"/>
+    </bean>
+    
+    <bean id="jerseyServiceClientBase" class="${package}.${rootArtifactId}.dao.impl.alfresco.jersey.JerseyServiceClientBase">
+        <property name="client"> 
+            <bean factory-method="create" class="com.sun.jersey.api.client.Client" >
+                <constructor-arg>                    
+                    <bean class="${package}.${rootArtifactId}.dao.impl.alfresco.jersey.JerseyClientConfig"/>
+                </constructor-arg>
+            </bean> 
+        </property> 
+        <property name="alfrescoURL" value="http://localhost:8080/alfresco"/>
+        <property name="alfrescoServicesURL" value="http://localhost:8080/alfresco/s"/>        
+        <property name="user" value="admin"/>
+        <property name="password" value="password"/>       
+    </bean> 
+    
+    
+    <!-- 
+        "Implement Logging as an Aspect Using Spring's AOP Framework":http://www.devx.com/java/Article/30799/1954
+    -->
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>dao</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>alfrescoDaoInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    
+</beans>

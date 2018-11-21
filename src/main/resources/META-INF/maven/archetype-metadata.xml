@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd"
+    xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <fileSets>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory></directory>
+      <includes>
+        <include>sonar.properties</include>
+        <include>README.txt</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+  <modules>
+    <module id="${rootArtifactId}-alfresco" dir="alfresco" name="${rootArtifactId}-alfresco">
+      <fileSets>
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory></directory>
+          <includes>
+            <include>README.txt</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+      <modules>
+        <module id="${rootArtifactId}-alfresco-modules" dir="modulos" name="${rootArtifactId}-alfresco-modules">
+          <modules>
+            <module id="${rootArtifactId}-alfresco-model" dir="__rootArtifactId__-model" name="${rootArtifactId}-alfresco-model">
+              <fileSets>
+                <fileSet filtered="true" encoding="UTF-8">
+                  <directory>src/main/config</directory>
+                  <includes>
+                    <include>**/*.xml</include>
+                  </includes>
+                </fileSet>
+                <fileSet filtered="true" encoding="UTF-8">
+                  <directory>src/main/resources</directory>
+                  <includes>
+                    <include>**/*.properties</include>
+                  </includes>
+                </fileSet>
+                <fileSet filtered="true" encoding="UTF-8">
+                  <directory></directory>
+                  <includes>
+                    <include>module.properties</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </module>
+            <module id="${rootArtifactId}-alfresco-services" dir="__rootArtifactId__-services" name="${rootArtifactId}-alfresco-services">
+              <fileSets>
+                <fileSet filtered="true" encoding="UTF-8">
+                  <directory>src/main/config</directory>
+                  <includes>
+                    <include>**/*.xml</include>
+                  </includes>
+                </fileSet>
+                <fileSet filtered="true" encoding="UTF-8">
+                  <directory></directory>
+                  <includes>
+                    <include>module.properties</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </module>
+            <module id="${rootArtifactId}-alfresco-services-model" dir="__rootArtifactId__-services-model" name="${rootArtifactId}-alfresco-services-model">
+              <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                  <directory>src/main/java</directory>
+                  <includes>
+                    <include>**/*.java</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </module>
+          </modules>
+        </module>
+        <module id="${rootArtifactId}-alfresco-war" dir="alfresco-war" name="${rootArtifactId}-alfresco-war">
+          <fileSets>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/main/webapp</directory>
+              <includes>
+                <include>**/*.txt</include>
+              </includes>
+            </fileSet>
+            <fileSet encoding="UTF-8">
+              <directory>src/main/resources</directory>
+              <includes>
+                <include>**/*.dtd</include>
+                <include>**/*.xsd</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory></directory>
+              <includes>
+                <include>README.txt</include>
+              </includes>
+            </fileSet>
+          </fileSets>
+        </module>
+      </modules>
+    </module>
+    <module id="${rootArtifactId}-modules" dir="__rootArtifactId__" name="${rootArtifactId}-modules">
+      <modules>
+        <module id="${rootArtifactId}-dto" dir="dto" name="${rootArtifactId}-dto">
+          <fileSets>
+            <fileSet filtered="true" packaged="true" encoding="UTF-8">
+              <directory>src/main/java</directory>
+              <includes>
+                <include>**/*.java</include>
+              </includes>
+            </fileSet>
+          </fileSets>
+        </module>
+        <module id="${rootArtifactId}-core-modules" dir="core" name="${rootArtifactId}-core-modules">
+          <modules>
+            <module id="${rootArtifactId}-core-interface" dir="core-interface" name="${rootArtifactId}-core-interface">
+              <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                  <directory>src/main/java</directory>
+                  <includes>
+                    <include>**/*.java</include>
+                  </includes>
+                </fileSet>
+                <fileSet filtered="true" encoding="UTF-8">
+                  <directory>src/main/resources</directory>
+                  <includes>
+                    <include>**/*.xml</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </module>
+            <module id="${rootArtifactId}-core-impl" dir="core-impl" name="${rootArtifactId}-core-impl">
+              <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                  <directory>src/main/java</directory>
+                  <includes>
+                    <include>**/*.java</include>
+                  </includes>
+                </fileSet>
+                <fileSet filtered="true" encoding="UTF-8">
+                  <directory>src/main/resources</directory>
+                  <includes>
+                    <include>**/*.xml</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </module>
+          </modules>
+        </module>
+        <module id="${rootArtifactId}-dao-modules" dir="dao" name="${rootArtifactId}-dao-modules">
+          <modules>
+            <module id="${rootArtifactId}-dao-interface" dir="dao-interface" name="${rootArtifactId}-dao-interface">
+              <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                  <directory>src/main/java</directory>
+                  <includes>
+                    <include>**/*.java</include>
+                  </includes>
+                </fileSet>
+                <fileSet filtered="true" encoding="UTF-8">
+                  <directory>src/main/resources</directory>
+                  <includes>
+                    <include>**/*.xml</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </module>
+            <module id="${rootArtifactId}-dao-impl-alfresco" dir="dao-impl-alfresco" name="${rootArtifactId}-dao-impl-alfresco">
+              <fileSets>
+                <fileSet filtered="true" packaged="true" encoding="UTF-8">
+                  <directory>src/main/java</directory>
+                  <includes>
+                    <include>**/*.java</include>
+                  </includes>
+                </fileSet>
+                <fileSet filtered="true" encoding="UTF-8">
+                  <directory>src/main/resources</directory>
+                  <includes>
+                    <include>**/*.xml</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </module>
+          </modules>
+        </module>
+        <module id="${rootArtifactId}-facade" dir="facade" name="${rootArtifactId}-facade">
+          <fileSets>
+            <fileSet filtered="true" packaged="true" encoding="UTF-8">
+              <directory>src/main/java</directory>
+              <includes>
+                <include>**/*.java</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/main/resources/wsdl</directory>
+              <includes>
+                <include>**/*.xsd</include>
+                <include>**/*.wsdl</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/main/resources</directory>
+              <includes>
+                <include>**/*.xml</include>
+                <include>**/*.properties</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory>src/main/webapp</directory>
+              <includes>
+                <include>**/*.xml</include>
+              </includes>
+            </fileSet>
+            <fileSet filtered="true" encoding="UTF-8">
+              <directory></directory>
+              <includes>
+                <include>nb-configuration.xml</include>
+              </includes>
+            </fileSet>
+          </fileSets>
+        </module>
+      </modules>
+    </module>
+  </modules>
+</archetype-descriptor>

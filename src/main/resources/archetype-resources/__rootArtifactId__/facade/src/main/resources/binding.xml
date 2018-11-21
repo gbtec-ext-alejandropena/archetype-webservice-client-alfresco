@@ -1,0 +1,17 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxws:bindings wsdlLocation="../resources/wsdl/${rootArtifactId}.wsdl"
+                xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+                xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+       
+    <jaxws:bindings node="wsdl:definitions/wsdl:types/xs:schema[@targetNamespace='http://ingapl.com/${rootArtifactId}/wsdl']">
+        <jxb:globalBindings xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <jxb:serializable uid="11082011"/>
+        </jxb:globalBindings>
+    </jaxws:bindings>
+    
+</jaxws:bindings>
