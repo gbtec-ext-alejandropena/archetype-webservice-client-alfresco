@@ -91,18 +91,23 @@ and another related to the web service.
 Regarding the part of $ {artifactId}, the web service is divided into 3 modules dao, core and facade. The first two will generate a .jar with the logic of access to data and business respectively, while the last one will generate a WAR that will be the drop-down with the implementation of the web service.
 
 - ./${artifactId}
+
 Project that contains the code for the development of the web service. Inside this folder is the pom.xml of $ {artifactId} -modules, which unifies the dao, core and facade modules.
 
 - ./dao
+
 Project with the logic of access to data (requests to alfresco). Any logic associated with the repository should be isolated in this part of the code. It consists of two modules, the interface and the specific implementation for alfresco. If you want to change the document manager, you only need to develop a specific DAO.
 
 - ./core
+
 Includes the business logic of the web service. It is composed by the interface module and the implementation module.
 
 - ./facade
+
 Code that generates the war of the application, here the front part of the web service will be developed.
 	
 - ./dto
+
 Module that unifies objects for the exchange of data between the different layers of the project (Data Transfer Objects)
 
 
@@ -123,16 +128,21 @@ Modules of the project are structured as follows:
 
 
  - ./alfresco-war
+ 
 Alfresco's generic customizations are made in this directory (eg: the login page). After the compilation, all the modules in the folder ./modules/ will be integrated into the present war. So the war generated in ./alfresco-war/target/alfresco.war will have in addition to the generic customizations the project modules included in it.
 
  - ./modulos
+ 
 Includes each one of the modules developed in this project to integrate with Alfresco
 
 - ./${parentArtifactId}-model
+
 AMP module that includes the alfresco model used by $ {parentArtifactId}
 
 - ./${parentArtifactId}-services
+
 AMP module that includes the REST services consumed by the $ {parentArtifactId} web service
 
 - ./${parentArtifactId}-services-model
+
 JAR module that groups the necessary classes for communication between the application and web services. In general, it should be imported both in the service module and in the alfresco implementation dao
