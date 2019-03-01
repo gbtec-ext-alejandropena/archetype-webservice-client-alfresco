@@ -1,34 +1,33 @@
 
 # archetype-webservice-client-alfresco
-Arquetipo para la generación de un servicio web SOAP (CXF) cliente del gestor documental Alfresco
+Archetype for the generation of a SOAP web service (cxf) client of an Alfresco instance.
 
-## Compilación del Arquetipo
+## Archetype compilation
 
     $ mvn clean install
 
-Además de generar el .jar del arquetipo, creará el fichero archetype-catalog.xml en `~/.m2`, donde se listará el arquetipo disponible.
+In addition to generating the .jar archetype, it will create the file archetype-catalog.xml in `~/.m2`, where the available archetype will be listed.
 
-## Uso del Arquetipo
-Teniendo el arquetipo disponible en el repositorio, para poder utilizarlo los pasos a seguir serían:
-#### 1 - Incluír arquetipo en el catálogo local
-En caso de que no exista, debe copiarse el fichero 
+## Archetype use
+Having the archetype available in the repository, in order to use it, the steps to follow would be:
+#### 1 - Include archetype in the local catalog
+If it does not exist, next file must be copied
   
 
     $ config/archetype-catalog.xml 
 
-en 
+in maven folder:
 
-    $ (mvn 2) /home/[usuario]/.m2
-    $ (mvn 3) /home/[usuario]/.m2/repository
+    $ (mvn 2)/home/[usuario]/.m2
+    $ (mvn 3)/home/[usuario]/.m2/repository
 
-Si el fichero ya existe, simplemente debería añadirse el arquetipo al listado existente.
+If the file already exists, you should simply add the archetype to the existing list.
 	
-#### 2 - Incluir autenticación para la descarga del arquetipo
-Para autenticarse y descargar el arquetipo (en caso de tenerlo alojado en un repositorio), maven utiliza el id de repositorio [archetypeArtifactId]-repo: 
+#### 2 - Include authentication to download the archetype
+To authenticate and download the archetype (if it is hosted in a repository), maven uses the repository id [archetypeArtifactId]-repo: 
 http://maven.apache.org/archetype/maven-archetype-plugin/faq.html#authentication
 
-Por tanto, en el fichero `/home/[usuario]/.m2` debe editarse el fichero `settings.xml` para incluir este id de repositorio webservice-repo, 
-de forma similar al siguiente ejemplo:
+Therefore, in the file `/home/[user]/.m2`, the` settings.xml` file must be edited to include this repository id webservice-repo, like the following example:
 
     <servers>
             <server>
@@ -40,34 +39,35 @@ de forma similar al siguiente ejemplo:
 
 
 
-#### 3 - Generar la estructura del proyecto
+#### 3 - Generate the project structure
 
     $ mvn archetype:generate
 
-Listará los arquetipos disponibles, al final de la lista aparecerán los arquetipos locales. Debe seleccionarse:
+It will list the available archetypes, the local archetypes will appear. 
+It must be selected:
 
     - com.ingapl.archetype:webservice (Ingapl Archetype - Servicio Web)
 
-Se indican los parametros solicitados (groupId, artifactId, version) y la estructura se generará automáticamente. 
+The requested parameters should be indicated (groupId, artifactId, version) and the structure will be generated automatically.
 
-#### 3 - Dar de alta en jenkins y sonar
-El proyecto viene preparado para ser dado de alta en ambas aplicaciones. 
-El fichero de configuración `sonar.properties` se genera en `[aplicacion]/target/sonar/sonar.properties`.
+#### 3 - Register in jenkins and sonar
+The project is ready to be registered in both applications.
+The `sonar.properties` configuration file is generated in` [application]/target/sonar/sonar.properties`.
 
-En jenkins debe configurarse el SonarQube Scanner con dicha ruta: 
+In jenkins the SonarQube Scanner must be configured with this route:
 
 `Path to project properties = target\sonar\sonar.properties`
 
-También debe configurarse el project key resultante en 
+The resulting project key must also be configured in:
 
-`Acciones para ejecutar después - Quality Gates.` 
+`Actions to execute after - Quality Gates.` 
 
-De esta forma si sonar detecta errores graves, jenkins lo notificará a los correos configurados.
+This way if sonar detects serious errors, jenkins will notify you to the configured emails.
 
 
-## Estructura generada
-La estructura de proyecto que se generará está compuesta por dos módulos diferenciados, el que hace referencia a alfresco,
-y el relacionado con el servicio web.
+## Generated structure
+The project structure that will be generated is composed of two different modules, one that refers to alfresco,
+and another related to the web service.
 
 	.
 	|-- alfresco
@@ -86,30 +86,31 @@ y el relacionado con el servicio web.
 		|	`-- core-impl
 		|-- facade
 		`-- dto
-#### Servicio Web
-Referente a la parte de ${artifactId}, el servicio web se divide en 3 módulos dao, core y facade. Los dos primeros generarán un .jar con la lógica de acceso a datos y negocio respectivamente, mientras que el último generará un WAR que será el desplegable con la implementación del servicio web.
+		
+#### Web Service
+Regarding the part of $ {artifactId}, the web service is divided into 3 modules dao, core and facade. The first two will generate a .jar with the logic of access to data and business respectively, while the last one will generate a WAR that will be the drop-down with the implementation of the web service.
 
 - ./${artifactId}
-Proyecto que contiene el código para el desarrollo del servicio web.	En el interior de esta carpeta se encuentra el pom.xml de ${artifactId}-modules, el cual unifica los módulos dao, core y facade.
+Project that contains the code for the development of the web service. Inside this folder is the pom.xml of $ {artifactId} -modules, which unifies the dao, core and facade modules.
 
 - ./dao
-Proyecto con la lógica de acceso a datos (consultas a alfresco). Toda lógica asociada al repositorio debería estar aislada en esta parte del código. Está compuesto por dos módulos, la interfaz y la implementación especifica para alfresco. Si se desease cambiar el gestor documental únicamente habría que desarrollar un DAO especifico.
+Project with the logic of access to data (requests to alfresco). Any logic associated with the repository should be isolated in this part of the code. It consists of two modules, the interface and the specific implementation for alfresco. If you want to change the document manager, you only need to develop a specific DAO.
 
 - ./core
-Incluye la lógica de negocio del servicio web. Está compuesto por el modulo de interfaz y el de implementación.
+Includes the business logic of the web service. It is composed by the interface module and the implementation module.
 
 - ./facade
-Código que genera el war de la aplicación, aquí se desarrollará la parte de fachada del servicio web.
+Code that generates the war of the application, here the front part of the web service will be developed.
 	
 - ./dto
-Módulo que unifica objetos para el intercambio de datos entre las diferentes capas del proyecto (Data Transfer Objects)
+Module that unifies objects for the exchange of data between the different layers of the project (Data Transfer Objects)
 
 
 
 #### Alfresco
-El proyecto está concebido como una agregación de módulos independientes. Esto significa	que cada uno de los módulos evoluciona de manera independiente y es en proceso de compilación cuando se realiza la integración de todos ellos. (ver https://maven.apache.org/guides/introduction/introduction-to-the-pom.html#Project_Aggregation)
+The project is conceived as an aggregation of independent modules. This means that each of the modules evolves independently and is in the process of compilation when the integration of all of them is done. (see https://maven.apache.org/guides/introduction/introduction-to-the-pom.html#Project_Aggregation)
 
-Los módulos del proyecto están estructurados del siguiente modo :
+Modules of the project are structured as follows:
 
 		|-- alfresco-war
 		`-- modulos        
@@ -122,16 +123,16 @@ Los módulos del proyecto están estructurados del siguiente modo :
 
 
  - ./alfresco-war
-En este directorio del proyecto se realizan las customizaciones génericas de Alfresco (ej: la página de login). Tras la compilación todos los módulos de la carpeta ./modules/... se integraran en el presente war; con lo que el war generado en ./alfresco-war/target/alfresco.war tendrá además de las customizaciones génericas los módulos del proyecto incluidos en él.
+Alfresco's generic customizations are made in this directory (eg: the login page). After the compilation, all the modules in the folder ./modules/ will be integrated into the present war. So the war generated in ./alfresco-war/target/alfresco.war will have in addition to the generic customizations the project modules included in it.
 
  - ./modulos
-Incluye cada uno de los módulos que se desarrollan en este proyecto para integrar con Alfresco
+Includes each one of the modules developed in this project to integrate with Alfresco
 
 - ./${parentArtifactId}-model
-Modulo AMP que incluye el modelo de alfresco utilizado por ${parentArtifactId}
+AMP module that includes the alfresco model used by $ {parentArtifactId}
 
 - ./${parentArtifactId}-services
-Modulo AMP que incluye los servicios REST utilizados por el servicio web de ${parentArtifactId}
+AMP module that includes the REST services consumed by the $ {parentArtifactId} web service
 
 - ./${parentArtifactId}-services-model
-Modulo JAR que agrupa las clases necesarias para una comunicación entre la aplicación y servicios web. Por lo general deberá importarse tanto en el modulo de servicios como en el dao de implementación de acceso a alfresco.
+JAR module that groups the necessary classes for communication between the application and web services. In general, it should be imported both in the service module and in the alfresco implementation dao
