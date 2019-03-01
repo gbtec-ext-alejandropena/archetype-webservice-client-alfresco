@@ -1,6 +1,6 @@
 
 # archetype-webservice-client-alfresco
-Archetype for the generation of a SOAP web service (cxf) client of an Alfresco instance.
+Archetype for the generation of a SOAP web service client of an Alfresco instance using Apache CXF
 
 ## Archetype compilation
 
